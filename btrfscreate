@@ -1,0 +1,414 @@
+#!/bin/bash
+#
+# Btrfscreate v2.0
+# ----------------------------------------|
+#           :
+# Author    : LinuxShef
+#           :
+# Project   : https://github.com/shefpower/btrfscreate.git
+#           :
+# License   : LGPL-3.0 (http://opensource.org/licenses/lgpl-3.0.html)
+#           :
+#----------------------------------------------------------------------|
+clear
+echo '
+
+
+
+
+
+
+
+
+
+
+$$$$$$$\    $$\                $$$$$$\                                                    $$\
+$$  __$$\   $$ |              $$  __$$\                                                   $$ |
+$$ |  $$ |$$$$$$\    $$$$$$\  $$ /  \__|$$$$$$$\  $$$$$$$\  $$$$$$\   $$$$$$\   $$$$$$\ $$$$$$\    $$$$$$\
+$$$$$$$\ |\_$$  _|  $$  __$$\ $$$$\    $$  _____|$$  _____|$$  __$$\ $$  __$$\  \____$$\\_$$  _|  $$  __$$\
+$$  __$$\   $$ |    $$ |  \__|$$  _|   \$$$$$$\  $$ /      $$ |  \__|$$$$$$$$ | $$$$$$$ | $$ |    $$$$$$$$ |
+$$ |  $$ |  $$ |$$\ $$ |      $$ |      \____$$\ $$ |      $$ |      $$   ____|$$  __$$ | $$ |$$\ $$   ____|
+$$$$$$$  |  \$$$$  |$$ |      $$ |     $$$$$$$  |\$$$$$$$\ $$ |      \$$$$$$$\ \$$$$$$$ | \$$$$  |\$$$$$$$\
+\_______/    \____/ \__|      \__|     \_______/  \_______|\__|       \_______| \_______|  \____/  \_______|
+
+
+
+
+
+'
+sleep 2
+#----------------------------------------------------------------------|
+clear
+echo '
+
+
+
+
+
+
+
+ $$$$$$\              $$\     $$\
+$$  __$$\             $$ |    $$ |
+$$ /  $$ |$$\   $$\ $$$$$$\   $$$$$$$\   $$$$$$\   $$$$$$\
+$$$$$$$$ |$$ |  $$ |\_$$  _|  $$  __$$\ $$  __$$\ $$  __$$\
+$$  __$$ |$$ |  $$ |  $$ |    $$ |  $$ |$$ /  $$ |$$ |  \__|
+$$ |  $$ |$$ |  $$ |  $$ |$$\ $$ |  $$ |$$ |  $$ |$$ |
+$$ |  $$ |\$$$$$$  |  \$$$$  |$$ |  $$ |\$$$$$$  |$$ |
+\__|  \__| \______/    \____/ \__|  \__| \______/ \__|
+
+
+
+$$\       $$\                                $$$$$$\  $$\                  $$$$$$\
+$$ |      \__|                              $$  __$$\ $$ |                $$  __$$\
+$$ |      $$\ $$$$$$$\  $$\   $$\ $$\   $$\ $$ /  \__|$$$$$$$\   $$$$$$\  $$ /  \__|
+$$ |      $$ |$$  __$$\ $$ |  $$ |\$$\ $$  |\$$$$$$\  $$  __$$\ $$  __$$\ $$$$\
+$$ |      $$ |$$ |  $$ |$$ |  $$ | \$$$$  /  \____$$\ $$ |  $$ |$$$$$$$$ |$$  _|
+$$ |      $$ |$$ |  $$ |$$ |  $$ | $$  $$<  $$\   $$ |$$ |  $$ |$$   ____|$$ |
+$$$$$$$$\ $$ |$$ |  $$ |\$$$$$$  |$$  /\$$\ \$$$$$$  |$$ |  $$ |\$$$$$$$\ $$ |
+\________|\__|\__|  \__| \______/ \__/  \__| \______/ \__|  \__| \_______|\__|
+
+
+'
+sleep 2
+#----------------------------------------------------------------------|
+#                                                      #
+#               Change of localization                 #
+#                                                      #
+#----------------------------------------------------------------------|
+clear
+echo '
+
+
+
+
+
+
+
+
+
+
+
+
+            ────────────────────────────────────────────────────────────────────────
+
+
+                 ██╗      ██████╗  █████╗ ██████╗ ██╗███╗   ██╗ ██████╗
+                 ██║     ██╔═══██╗██╔══██╗██╔══██╗██║████╗  ██║██╔════╝
+                 ██║     ██║   ██║███████║██║  ██║██║██╔██╗ ██║██║  ███╗
+                 ██║     ██║   ██║██╔══██║██║  ██║██║██║╚██╗██║██║   ██║
+                 ███████╗╚██████╔╝██║  ██║██████╔╝██║██║ ╚████║╚██████╔╝██╗██╗██╗
+                 ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝╚═╝╚═╝
+
+
+            ─────────────────────────────────────────────────────────────────────────
+'
+sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen
+sed -i s/'#ru_RU.UTF-8'/'ru_RU.UTF-8'/g /etc/locale.gen
+echo 'LANG=ru_RU.UTF-8' > /etc/locale.conf
+echo 'KEYMAP=ru' > /etc/vconsole.conf
+echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
+setfont cyr-sun16
+locale-gen >/dev/null 2>&1; RETVAL=$?
+clear
+
+echo '
+
+
+
+
+
+
+
+
+
+
+
+                                        Выбор разделов
+
+      .────────────────────────────────────────────────────────────────────────────────.
+      .                                                                                .
+      .                                                                                .
+      .                             Введите разделы диска                              .
+      .                                                                                .
+      .             (Root- Корневой)  (Boot- Загрузочный) (Swap- Подкачка)             .
+      .                                                                                .
+      .                                                                                .
+      .                  Например ( sda2, sdb2, sdc2 , nvme0n1p2 )                     .
+      .                                                                                .
+      .                                                                                .
+      .   ** Внимание ! Если вы не создали swap или home то оставьте поле пустым **    .
+      .                                                                                .
+      .                                                                                .
+      .────────────────────────────────────────────────────────────────────────────────.
+
+'
+read -p "
+                                 -> Boot: " boot
+read -p "
+                                 -> Root: " root
+read -p "
+                                 -> Swap: " swap
+read -p "
+                                 -> Home: " home
+
+clear
+
+echo '
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          Выбор файловой системы Boot раздела
+
+              .─────────────────────────────────────────────────────────────.
+              .                                                             .
+              .                                                             .
+              .      Выберите файловую систему загрузочного  boot раздела   .
+              .                                                             .
+              .  Согласно вашей версии Bios (обычный стрый BIOS или UEFI)   .
+              .                                                             .
+              .   Для UEFI формат FAT32 . Для обычнго BIOS Ext4 или Ext2    .
+              .                                                             .
+              .                                                             .
+              .─────────────────────────────────────────────────────────────.
+
+'
+echo -e "\t
+
+                       -> Для UEFI введите     1    "
+echo -e "\t
+
+
+
+                       -> Не форматировать  введите      2
+
+                      ( Для утсановки в один раздел DOS/MBR или рядом с Windows )"
+echo -e "\t
+
+
+
+
+                       -> Для обычного Bios форматировать в Ext4 введите    3   "
+echo -e "\t
+
+
+                       -> Для обычного Bios фоматировать в Ext2 введиет    4   "
+echo -n "
+
+
+                           -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) clear ; mkfs.vfat -F32 /dev/$boot
+         ;;
+         "3" ) clear ; mkfs.ext4 /dev/$boot
+         ;;
+         "4" ) clear ; mkfs.ext2 /dev/$boot
+         ;;
+         "2" ) clear
+      esac
+
+clear
+mkfs.btrfs -f /dev/$root
+mkswap /dev/$swap
+swapon /dev/$swap
+clear
+
+echo '
+
+
+
+
+
+
+
+
+
+
+
+
+                    Home раздел , выбор файловой системы Home раздела
+
+                .───────────────────────────────────────────────────────.
+                .                                                       .
+                .                                                       .
+                .       Выберите файловую систему Home раздела          .
+                .                                                       .
+                .                      Btrfs или Ext4                   .
+                .                                                       .
+                .                                                       .
+                .───────────────────────────────────────────────────────.
+
+                        -> Чтобы пропустить это шаг нажмите Enter <-
+'
+echo -e "\t
+
+                        -> Форматировать в Btrfs введите    1    "
+echo -e "\t
+
+
+                        -> Форматировать в Ext4 введите     2    "
+echo -n "
+
+                            -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) clear ; mkfs.btrfs -f /dev/$home
+         ;;
+         "2" ) clear ; mkfs.ext4 /dev/$home
+      esac
+
+
+clear
+
+echo '
+
+
+
+
+
+
+
+
+
+                                 Монтирование разделов
+
+                            и  домашнего ( home ) раздела
+
+                 .───────────────────────────────────────────────────────.
+                 .                                                       .
+                 .                                                       .
+                 .       Выберите один из вариантов монтирования         .
+                 .                                                       .
+                 .                                                       .
+                 .───────────────────────────────────────────────────────.
+'
+echo -e "\t
+
+
+                     ->  Смонтировать БЕЗ Home введите     1     "
+
+echo -e "\t
+
+                     ->  Cмонтрировать Home введите    2    "
+
+echo -n "
+
+                      -> Введите значение : "
+
+read main_menu
+      case "$main_menu" in
+        "1") clear ;
+mount  /dev/$root /mnt
+
+btrfs su cr /mnt/@
+
+btrfs su cr /mnt/@home
+
+btrfs su cr /mnt/@var
+
+btrfs su cr /mnt/@var_log
+
+btrfs su cr /mnt/@snapshots
+
+umount /mnt
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@ /dev/$root /mnt
+
+mkdir /mnt/{boot,home,var,var_log,.snapshots}
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@home  /dev/$root  /mnt/home
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@var  /dev/$root  /mnt/var
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@var_log /dev/$root /mnt/var_log
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@snapshots  /dev/$root  /mnt/.snapshots
+        ;;
+        "2" ) clear ;
+
+mount  /dev/$root /mnt
+
+btrfs su cr /mnt/@
+
+btrfs su cr /mnt/@home
+
+btrfs su cr /mnt/@var
+
+btrfs su cr /mnt/@var_log
+
+btrfs su cr /mnt/@snapshots
+
+umount /mnt
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@ /dev/$root /mnt
+
+mkdir /mnt/{boot,home,var,var_log,.snapshots}
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@home  /dev/$home  /mnt/home
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@var  /dev/$root  /mnt/var
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@var_log /dev/$root /mnt/var_log
+
+mount -o rw,noatime,compress=zstd:2,space_cache=v2,discard=async,subvol=@snapshots  /dev/$root  /mnt/.snapshots
+   esac
+
+clear
+echo '
+
+
+
+
+
+
+
+
+
+
+
+                              Монтирование boot раздела
+
+               .─────────────────────────────────────────────────────────.
+               .                                                         .
+               .                                                         .
+               .          Монтирование загрузочного раздела !            .
+               .                                                         .
+               .    Выберите один из варинтов монтирования boot раздела  .
+               .                                                         .
+               .        Для обычного биоса (НЕ UEFI) введите Bios        .
+               .                                                         .
+               .              Для UEFI биоса , введите Uefi              .
+               .                                                         .
+               .                                                         .
+               .─────────────────────────────────────────────────────────.
+'
+echo -e "\t
+
+                        -> Для UEFI или EFI введите     1    "
+echo -e "\t
+
+
+                        -> Для обычного Bios введите    2    "
+echo -n "
+
+
+                        -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) mkdir /mnt/boot/efi ; mount /dev/$boot /mnt/boot/efi
+         ;;
+         "2" ) mount /dev/$boot  /mnt/boot/
+      esac
+
+clear
+df -h
