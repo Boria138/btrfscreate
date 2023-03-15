@@ -25,7 +25,7 @@ $$$$$$$  |  \$$$$  |$$ |      $$ |     $$$$$$$  |\$$$$$$$\ $$ |      \$$$$$$$\ \
 
         <───────────────────────────────────────────────────────────────────────────>
                      Внимание !  скрипт НЕ создает разделы на диске , разделы вы
-                    создаёте сами , поэтому если вы еще не создали разделы - создайте их
+                создаёте сами , поэтому если вы еще не создали разделы - создайте их
         <───────────────────────────────────────────────────────────────────────────>
 
 '
@@ -39,10 +39,13 @@ echo '
       .                                                                                .
       .                             Введите разделы диска                              .
       .                                                                                .
-      .             (Root- Корневой)  (Boot- Загрузочный) (Swap- Подкачка)             .
+      .       (Root- Корневой)  (Boot- Загрузочный) (Swap- Подкачка) (Swap file)       .
       .                                                                                .
       .                                                                                .
       .                  Например ( sda2, sdb2, sdc2 , nvme0n1p2 )                     .
+      .                                                                                .
+      .                                                                                .
+      .                (Swap file - размер файла подкачки для EXT4 в mb)               .
       .                                                                                .
       .                                                                                .
       .                                                                                .
@@ -56,6 +59,8 @@ read -p "
                                  -> Root: " root
 read -p "
                                  -> Swap: " swap
+read -p "
+                                 -> Swap file: " swap_file
 
 clear
 
@@ -112,10 +117,6 @@ read main_menu
       esac
 
 clear
-mkswap /dev/$swap
-swapon /dev/$swap
-clear
-
 echo '
                                  Выбор файловой системы
 
@@ -142,7 +143,7 @@ echo -n "
                            -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" )mkfs.btrfs -f /dev/$root ; clear ;
+         "1" )mkfs.btrfs -f /dev/$root ; mkswap /dev/$swap ; swapon /dev/$swap ; clear ;
          echo '
                           Монтирование BTRFS для SSD и HDD
 
@@ -199,9 +200,10 @@ mount -o rw,relatime,compress=zstd:2,ssd_spread,max_inline=256,commit=120,subvol
 mkdir /mnt/{boot,home}
 
 mount -o rw,relatime,compress=zstd:2,ssd_spread,max_inline=256,commit=120,subvol=@home  /dev/$root  /mnt/home
+clear
        esac
         ;;
-        "2" ) mkfs.ext4 -f /dev/$root ; clear
+        "2" ) mkfs.ext4 -f /dev/$root ; dd if=/dev/zero of=/swapfile bs=1M count=$swap_file status=progress ; chmod 0600 /swapfile ; mkswap -U clear /swapfile ; swapon /swapfile ; clear
       esac
 clear
 echo '
