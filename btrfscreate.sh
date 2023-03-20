@@ -45,10 +45,6 @@ echo '
       .                  Например ( sda2, sdb2, sdc2 , nvme0n1p2 )                     .
       .                                                                                .
       .                                                                                .
-      .                (Swap file - размер файла подкачки для EXT4 в mb)               .
-      .                                                                                .
-      .                                                                                .
-      .                                                                                .
       .                                                                                .
       .────────────────────────────────────────────────────────────────────────────────.
 
@@ -59,8 +55,6 @@ read -p "
                                  -> Root: " root
 read -p "
                                  -> Swap: " swap
-read -p "
-                                 -> Swap file: " swap_file
 
 clear
 
@@ -118,12 +112,12 @@ read main_menu
 
 clear
 echo '
-                                 Выбор файловой системы
+                           Выбор файловой системы корневого раздела
 
               .──────────────────────────────────────────────────────────────.
               .                                                              .
               .                                                              .
-              .             Выберите файловую систему                        .
+              .          Выберите файловую систему корневого раздела         .
               .                                                              .
               .                                                              .
               .──────────────────────────────────────────────────────────────.
@@ -145,7 +139,7 @@ read main_menu
       case "$main_menu" in
          "1" )mkfs.btrfs -f /dev/$root ; mkswap /dev/$swap ; swapon /dev/$swap ; clear ;
          echo '
-                          Монтирование BTRFS для SSD и HDD
+                        Монтирование BTRFS для SSD или HDD
 
              .───────────────────────────────────────────────────────.
              .                                                       .
@@ -203,7 +197,11 @@ mount -o rw,relatime,compress=zstd:2,ssd_spread,max_inline=256,commit=120,subvol
 clear
        esac
         ;;
-        "2" ) mkfs.ext4 -f /dev/$root ; dd if=/dev/zero of=/swapfile bs=1M count=$swap_file status=progress ; chmod 0600 /swapfile ; mkswap -U clear /swapfile ; swapon /swapfile ; clear
+        "2" )
+        mkfs.ext4 -f /dev/$root
+
+        mount  /dev/$root /mnt
+        clear
       esac
 clear
 echo '
