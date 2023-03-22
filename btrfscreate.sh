@@ -57,6 +57,9 @@ read -p "
                                  -> Swap: " swap
 
 clear
+mkswap /dev/$swap 
+swapon /dev/$swap 
+clear
 
 echo '
                           Выбор файловой системы Boot раздела
@@ -137,7 +140,7 @@ echo -n "
                            -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" )mkfs.btrfs -f /dev/$root ; mkswap /dev/$swap ; swapon /dev/$swap ; clear ;
+         "1" )mkfs.btrfs -f /dev/$root ; clear ;
          echo '
                         Монтирование BTRFS для SSD или HDD
 
@@ -198,7 +201,7 @@ clear
        esac
         ;;
         "2" )
-        mkfs.ext4 -f /dev/$root
+        mkfs.ext4 -F /dev/$root
 
         mount  /dev/$root /mnt
         clear
@@ -234,7 +237,7 @@ echo -n "
                         -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) mkdir /mnt/boot/efi ; mount /dev/$boot /mnt/boot/efi
+         "1" ) mkdir -p /mnt/boot/efi ; mount /dev/$boot /mnt/boot/efi
          ;;
          "2" ) mount /dev/$boot  /mnt/boot/
       esac
