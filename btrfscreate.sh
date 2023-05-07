@@ -239,7 +239,7 @@ read main_menu
       case "$main_menu" in
          "1" ) mkdir -p /mnt/boot/efi ; mount /dev/$boot /mnt/boot/efi
          ;;
-         "2" ) mount /dev/$boot  /mnt/boot/
+         "2" ) mkdir -p /mnt/boot ; mount /dev/$boot  /mnt/boot/
       esac
 
 clear
