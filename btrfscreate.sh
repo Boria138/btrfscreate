@@ -39,7 +39,7 @@ echo '
       .                                                                                .
       .                             Введите разделы диска                              .
       .                                                                                .
-      .       (Root- Корневой)  (Boot- Загрузочный) (Swap- Подкачка) (Swap file)       .
+      .       (Root- Корневой)  (Boot- Загрузочный) (Swap- Подкачка)                   .
       .                                                                                .
       .                                                                                .
       .                  Например ( sda2, sdb2, sdc2 , nvme0n1p2 )                     .
@@ -54,11 +54,12 @@ read -p "
 read -p "
                                  -> Root: " root
 read -p "
-                                 -> Swap: " swap
+                                 -> Swap(Если используйте zram оставте пустым): " swap
 
 clear
 mkswap /dev/$swap 
-swapon /dev/$swap 
+swapon /dev/$swap
+export $swap
 clear
 
 echo '
@@ -134,6 +135,16 @@ echo -e "\t
 
 
                        -> Форматировать в EXT4      2"
+echo -e "\t
+
+
+
+                       -> Форматировать в F2FS     3"
+echo -e "\t
+
+
+
+                       -> Форматировать в XFS      4"
 echo -n "
 
 
@@ -202,6 +213,18 @@ clear
         ;;
         "2" )
         mkfs.ext4 -F /dev/$root
+
+        mount  /dev/$root /mnt
+        clear
+        ;;
+        "3" )
+        mkfs.f2fs -f -O extra_attr,inode_checksum,sb_checksum,compression /dev/$root
+
+        mount  /dev/$root /mnt
+        clear
+        ;;
+        "4" )
+        mkfs.xfs -f /dev/$root
 
         mount  /dev/$root /mnt
         clear
